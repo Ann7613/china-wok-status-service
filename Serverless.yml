@@ -1,0 +1,83 @@
+org: ${env:ORG_NAME}
+service: china-wok-status-service
+
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: python3.13
+  memorySize: 256
+  stage: dev
+  region: us-east-1
+  timeout: 20
+  iam:
+    role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/${env:ROLE_NAME}
+  
+  environment:
+    ORDERS_TABLE: ${env:ORDERS_TABLE}
+
+functions:
+  # EVENT LISTENERS - Escuchan EventBridge
+
+  
+  eventListener:
+    handler: handlers/event_listener.handle_order_event
+    description: Escucha eventos del flujo de pedidos y actualiza DynamoDB
+    events:
+      - eventBridge:
+          eventBus: default
+          pattern:
+            source:
+              - orders.service
+            detail-type:
+              - OrderCreated
+              - OrderStatusUpdated
+              - OrderCancelled
+
+  # API ENDPOINTS - Para consultas
+  
+  getOrderStatus:
+    handler: handlers/get_order_status.lambda_handler
+    description: Obtiene el estado actual de un pedido específico
+    events:
+      - http:
+          path: /status/order/{order_id}
+          method: get
+          cors: true
+          integration: lambda
+
+  getOrderHistory:
+    handler: handlers/get_order_history.lambda_handler
+    description: Obtiene el historial completo de un pedido con tiempos
+    events:
+      - http:
+          path: /status/order/{order_id}/history
+          method: get
+          cors: true
+          integration: lambda
+
+  getDashboardOrders:
+    handler: handlers/get_dashboard_orders.lambda_handler
+    description: Dashboard para el restaurante - pedidos por estado
+    memorySize: 512
+    events:
+      - http:
+          path: /status/dashboard
+          method: get
+          cors: true
+          integration: lambda
+          request:
+            parameters:
+              querystrings:
+                status: false
+
+  getCustomerOrders:
+    handler: handlers/get_customer_orders.lambda_handler
+    description: Lista todos los pedidos de un cliente con estado
+    events:
+      - http:
+          path: /status/customer/{customer_id}
+          method: get
+          cors: true
+          integration: lambda
