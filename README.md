@@ -14,7 +14,7 @@ getDashboardOrders
 getCustomerOrders
 
 
-## 🌐 Endpoints Disponibles
+## Endpoints Disponibles
 
 | Método | Endpoint                                      | Descripción |
 |--------|-----------------------------------------------|-------------|
@@ -25,7 +25,7 @@ getCustomerOrders
 
 ---
 
-## 📦 Funciones Lambda
+## Funciones Lambda
 
 | Función             | Propósito |
 |---------------------|-----------|
