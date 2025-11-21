@@ -1,0 +1,3338 @@
+{
+  "/home/ubuntu/proyecto2/china-wok-status-service/serverless.yml": {
+    "versionFramework": "4.24.0",
+    "servicePath": "/home/ubuntu/proyecto2/china-wok-status-service/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "anelrojas",
+      "service": "china-wok-status-service",
+      "plugins": [
+        "serverless-dotenv-plugin"
+      ],
+      "provider": {
+        "name": "aws",
+        "runtime": "python3.13",
+        "memorySize": 256,
+        "stage": "dev",
+        "region": "us-east-1",
+        "timeout": 20,
+        "iam": {
+          "role": "arn:aws:iam::733476523620:role/LabRole"
+        },
+        "environment": {
+          "ORDERS_TABLE": "Orders",
+          "ORG_NAME": "anelrojas",
+          "SERVICE_NAME": "china-wok-status-service",
+          "AWS_ACCOUNT_ID": "733476523620",
+          "ROLE_NAME": "LabRole"
+        },
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "EventListenerLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/china-wok-status-service-dev-eventListener"
+              }
+            },
+            "GetOrderStatusLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderStatus"
+              }
+            },
+            "GetOrderHistoryLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderHistory"
+              }
+            },
+            "GetDashboardOrdersLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getDashboardOrders"
+              }
+            },
+            "GetCustomerOrdersLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getCustomerOrders"
+              }
+            },
+            "EventListenerLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                  "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+                },
+                "Handler": "handlers/event_listener.handle_order_event",
+                "Runtime": "python3.13",
+                "FunctionName": "china-wok-status-service-dev-eventListener",
+                "MemorySize": 256,
+                "Timeout": 20,
+                "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB",
+                "Environment": {
+                  "Variables": {
+                    "ORDERS_TABLE": "Orders",
+                    "ORG_NAME": "anelrojas",
+                    "SERVICE_NAME": "china-wok-status-service",
+                    "AWS_ACCOUNT_ID": "733476523620",
+                    "ROLE_NAME": "LabRole"
+                  }
+                },
+                "Role": "arn:aws:iam::733476523620:role/LabRole"
+              },
+              "DependsOn": [
+                "EventListenerLogGroup"
+              ]
+            },
+            "GetOrderStatusLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                  "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+                },
+                "Handler": "handlers/get_order_status.lambda_handler",
+                "Runtime": "python3.13",
+                "FunctionName": "china-wok-status-service-dev-getOrderStatus",
+                "MemorySize": 256,
+                "Timeout": 20,
+                "Description": "Obtiene el estado actual de un pedido específico",
+                "Environment": {
+                  "Variables": {
+                    "ORDERS_TABLE": "Orders",
+                    "ORG_NAME": "anelrojas",
+                    "SERVICE_NAME": "china-wok-status-service",
+                    "AWS_ACCOUNT_ID": "733476523620",
+                    "ROLE_NAME": "LabRole"
+                  }
+                },
+                "Role": "arn:aws:iam::733476523620:role/LabRole"
+              },
+              "DependsOn": [
+                "GetOrderStatusLogGroup"
+              ]
+            },
+            "GetOrderHistoryLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                  "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+                },
+                "Handler": "handlers/get_order_history.lambda_handler",
+                "Runtime": "python3.13",
+                "FunctionName": "china-wok-status-service-dev-getOrderHistory",
+                "MemorySize": 256,
+                "Timeout": 20,
+                "Description": "Obtiene el historial completo de un pedido con tiempos",
+                "Environment": {
+                  "Variables": {
+                    "ORDERS_TABLE": "Orders",
+                    "ORG_NAME": "anelrojas",
+                    "SERVICE_NAME": "china-wok-status-service",
+                    "AWS_ACCOUNT_ID": "733476523620",
+                    "ROLE_NAME": "LabRole"
+                  }
+                },
+                "Role": "arn:aws:iam::733476523620:role/LabRole"
+              },
+              "DependsOn": [
+                "GetOrderHistoryLogGroup"
+              ]
+            },
+            "GetDashboardOrdersLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                  "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+                },
+                "Handler": "handlers/get_dashboard_orders.lambda_handler",
+                "Runtime": "python3.13",
+                "FunctionName": "china-wok-status-service-dev-getDashboardOrders",
+                "MemorySize": 512,
+                "Timeout": 20,
+                "Description": "Dashboard para el restaurante - pedidos por estado",
+                "Environment": {
+                  "Variables": {
+                    "ORDERS_TABLE": "Orders",
+                    "ORG_NAME": "anelrojas",
+                    "SERVICE_NAME": "china-wok-status-service",
+                    "AWS_ACCOUNT_ID": "733476523620",
+                    "ROLE_NAME": "LabRole"
+                  }
+                },
+                "Role": "arn:aws:iam::733476523620:role/LabRole"
+              },
+              "DependsOn": [
+                "GetDashboardOrdersLogGroup"
+              ]
+            },
+            "GetCustomerOrdersLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                  "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+                },
+                "Handler": "handlers/get_customer_orders.lambda_handler",
+                "Runtime": "python3.13",
+                "FunctionName": "china-wok-status-service-dev-getCustomerOrders",
+                "MemorySize": 256,
+                "Timeout": 20,
+                "Description": "Lista todos los pedidos de un cliente con estado",
+                "Environment": {
+                  "Variables": {
+                    "ORDERS_TABLE": "Orders",
+                    "ORG_NAME": "anelrojas",
+                    "SERVICE_NAME": "china-wok-status-service",
+                    "AWS_ACCOUNT_ID": "733476523620",
+                    "ROLE_NAME": "LabRole"
+                  }
+                },
+                "Role": "arn:aws:iam::733476523620:role/LabRole"
+              },
+              "DependsOn": [
+                "GetCustomerOrdersLogGroup"
+              ]
+            },
+            "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "EventListenerLambdaFunction"
+                },
+                "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+                "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB"
+              }
+            },
+            "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetOrderStatusLambdaFunction"
+                },
+                "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+                "Description": "Obtiene el estado actual de un pedido específico"
+              }
+            },
+            "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetOrderHistoryLambdaFunction"
+                },
+                "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+                "Description": "Obtiene el historial completo de un pedido con tiempos"
+              }
+            },
+            "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetDashboardOrdersLambdaFunction"
+                },
+                "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+                "Description": "Dashboard para el restaurante - pedidos por estado"
+              }
+            },
+            "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "GetCustomerOrdersLambdaFunction"
+                },
+                "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+                "Description": "Lista todos los pedidos de un cliente con estado"
+              }
+            },
+            "ApiGatewayRestApi": {
+              "Type": "AWS::ApiGateway::RestApi",
+              "Properties": {
+                "Name": "dev-china-wok-status-service",
+                "EndpointConfiguration": {
+                  "Types": [
+                    "EDGE"
+                  ]
+                },
+                "Policy": ""
+              }
+            },
+            "ApiGatewayResourceStatus": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "PathPart": "status",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusOrder": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatus"
+                },
+                "PathPart": "order",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusOrderOrderidVar": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatusOrder"
+                },
+                "PathPart": "{order_id}",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusOrderOrderidVarHistory": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+                },
+                "PathPart": "history",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusDashboard": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatus"
+                },
+                "PathPart": "dashboard",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusCustomer": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatus"
+                },
+                "PathPart": "customer",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceStatusCustomerCustomeridVar": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Ref": "ApiGatewayResourceStatusCustomer"
+                },
+                "PathPart": "{customer_id}",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodStatusOrderOrderidVarOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodStatusDashboardOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusDashboard"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodStatusCustomerCustomeridVarOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodStatusOrderOrderidVarGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetOrderStatusLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetOrderStatusLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodStatusOrderOrderidVarHistoryGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetOrderHistoryLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetOrderHistoryLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodStatusDashboardGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {
+                  "method.request.querystring.status": false
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusDashboard"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetDashboardOrdersLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetDashboardOrdersLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayMethodStatusCustomerCustomeridVarGet": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "GetCustomerOrdersLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "GetCustomerOrdersLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayDeployment1763684182451": {
+              "Type": "AWS::ApiGateway::Deployment",
+              "Properties": {
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "StageName": "dev"
+              },
+              "DependsOn": [
+                "ApiGatewayMethodStatusOrderOrderidVarOptions",
+                "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions",
+                "ApiGatewayMethodStatusDashboardOptions",
+                "ApiGatewayMethodStatusCustomerCustomeridVarOptions",
+                "ApiGatewayMethodStatusOrderOrderidVarGet",
+                "ApiGatewayMethodStatusOrderOrderidVarHistoryGet",
+                "ApiGatewayMethodStatusDashboardGet",
+                "ApiGatewayMethodStatusCustomerCustomeridVarGet"
+              ]
+            },
+            "GetOrderStatusLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetOrderStatusLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetOrderHistoryLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetOrderHistoryLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetDashboardOrdersLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetDashboardOrdersLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "GetCustomerOrdersLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "GetCustomerOrdersLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "ChinawokstatusservicedeveventListenerrule1EventBridgeRule": {
+              "Type": "AWS::Events::Rule",
+              "Properties": {
+                "EventPattern": {
+                  "source": [
+                    "orders.service"
+                  ],
+                  "detail-type": [
+                    "OrderCreated",
+                    "OrderStatusUpdated",
+                    "OrderCancelled"
+                  ]
+                },
+                "Name": "china-wok-status-service-dev-eventListener-rule-1",
+                "State": "ENABLED",
+                "Targets": [
+                  {
+                    "Arn": {
+                      "Fn::GetAtt": [
+                        "EventListenerLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "Id": "china-wok-status-service-dev-eventListener-rule-1-target"
+                  }
+                ]
+              }
+            },
+            "EventListenerEventBridgeLambdaPermission1": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "EventListenerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Principal": "events.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      "arn",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      "events",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      {
+                        "Fn::Join": [
+                          "/",
+                          [
+                            "rule",
+                            "default",
+                            "china-wok-status-service-dev-eventListener-rule-1"
+                          ]
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "EventListenerLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo"
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-EventListenerLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetOrderStatusLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA"
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-GetOrderStatusLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetOrderHistoryLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk"
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-GetOrderHistoryLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetDashboardOrdersLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8"
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-GetDashboardOrdersLambdaFunctionQualifiedArn"
+              }
+            },
+            "GetCustomerOrdersLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE"
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-GetCustomerOrdersLambdaFunctionQualifiedArn"
+              }
+            },
+            "ServiceEndpoint": {
+              "Description": "URL of the service endpoint",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/dev"
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-china-wok-status-service-dev-ServiceEndpoint"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "eventListener": {
+          "handler": "handlers/event_listener.handle_order_event",
+          "description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB",
+          "events": [
+            {
+              "eventBridge": {
+                "eventBus": "default",
+                "pattern": {
+                  "source": [
+                    "orders.service"
+                  ],
+                  "detail-type": [
+                    "OrderCreated",
+                    "OrderStatusUpdated",
+                    "OrderCancelled"
+                  ]
+                }
+              }
+            }
+          ],
+          "name": "china-wok-status-service-dev-eventListener",
+          "package": {},
+          "memory": 256,
+          "timeout": 20,
+          "runtime": "python3.13",
+          "vpc": {},
+          "versionLogicalId": "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo"
+        },
+        "getOrderStatus": {
+          "handler": "handlers/get_order_status.lambda_handler",
+          "description": "Obtiene el estado actual de un pedido específico",
+          "events": [
+            {
+              "http": {
+                "path": "status/order/{order_id}",
+                "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "china-wok-status-service-dev-getOrderStatus",
+          "package": {},
+          "memory": 256,
+          "timeout": 20,
+          "runtime": "python3.13",
+          "vpc": {},
+          "versionLogicalId": "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA"
+        },
+        "getOrderHistory": {
+          "handler": "handlers/get_order_history.lambda_handler",
+          "description": "Obtiene el historial completo de un pedido con tiempos",
+          "events": [
+            {
+              "http": {
+                "path": "status/order/{order_id}/history",
+                "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "china-wok-status-service-dev-getOrderHistory",
+          "package": {},
+          "memory": 256,
+          "timeout": 20,
+          "runtime": "python3.13",
+          "vpc": {},
+          "versionLogicalId": "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk"
+        },
+        "getDashboardOrders": {
+          "handler": "handlers/get_dashboard_orders.lambda_handler",
+          "description": "Dashboard para el restaurante - pedidos por estado",
+          "memorySize": 512,
+          "events": [
+            {
+              "http": {
+                "path": "status/dashboard",
+                "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY",
+                "request": {
+                  "parameters": {
+                    "method.request.querystring.status": false
+                  }
+                }
+              }
+            }
+          ],
+          "name": "china-wok-status-service-dev-getDashboardOrders",
+          "package": {},
+          "memory": 512,
+          "timeout": 20,
+          "runtime": "python3.13",
+          "vpc": {},
+          "versionLogicalId": "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8"
+        },
+        "getCustomerOrders": {
+          "handler": "handlers/get_customer_orders.lambda_handler",
+          "description": "Lista todos los pedidos de un cliente con estado",
+          "events": [
+            {
+              "http": {
+                "path": "status/customer/{customer_id}",
+                "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "china-wok-status-service-dev-getCustomerOrders",
+          "package": {},
+          "memory": 256,
+          "timeout": 20,
+          "runtime": "python3.13",
+          "vpc": {},
+          "versionLogicalId": "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "python3.13",
+      "memorySize": 256,
+      "stage": "dev",
+      "region": "us-east-1",
+      "timeout": 20,
+      "iam": {
+        "role": "arn:aws:iam::733476523620:role/LabRole"
+      },
+      "environment": {
+        "ORDERS_TABLE": "Orders",
+        "ORG_NAME": "anelrojas",
+        "SERVICE_NAME": "china-wok-status-service",
+        "AWS_ACCOUNT_ID": "733476523620",
+        "ROLE_NAME": "LabRole"
+      },
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "EventListenerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/china-wok-status-service-dev-eventListener"
+            }
+          },
+          "GetOrderStatusLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderStatus"
+            }
+          },
+          "GetOrderHistoryLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderHistory"
+            }
+          },
+          "GetDashboardOrdersLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getDashboardOrders"
+            }
+          },
+          "GetCustomerOrdersLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getCustomerOrders"
+            }
+          },
+          "EventListenerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+              },
+              "Handler": "handlers/event_listener.handle_order_event",
+              "Runtime": "python3.13",
+              "FunctionName": "china-wok-status-service-dev-eventListener",
+              "MemorySize": 256,
+              "Timeout": 20,
+              "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB",
+              "Environment": {
+                "Variables": {
+                  "ORDERS_TABLE": "Orders",
+                  "ORG_NAME": "anelrojas",
+                  "SERVICE_NAME": "china-wok-status-service",
+                  "AWS_ACCOUNT_ID": "733476523620",
+                  "ROLE_NAME": "LabRole"
+                }
+              },
+              "Role": "arn:aws:iam::733476523620:role/LabRole"
+            },
+            "DependsOn": [
+              "EventListenerLogGroup"
+            ]
+          },
+          "GetOrderStatusLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+              },
+              "Handler": "handlers/get_order_status.lambda_handler",
+              "Runtime": "python3.13",
+              "FunctionName": "china-wok-status-service-dev-getOrderStatus",
+              "MemorySize": 256,
+              "Timeout": 20,
+              "Description": "Obtiene el estado actual de un pedido específico",
+              "Environment": {
+                "Variables": {
+                  "ORDERS_TABLE": "Orders",
+                  "ORG_NAME": "anelrojas",
+                  "SERVICE_NAME": "china-wok-status-service",
+                  "AWS_ACCOUNT_ID": "733476523620",
+                  "ROLE_NAME": "LabRole"
+                }
+              },
+              "Role": "arn:aws:iam::733476523620:role/LabRole"
+            },
+            "DependsOn": [
+              "GetOrderStatusLogGroup"
+            ]
+          },
+          "GetOrderHistoryLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+              },
+              "Handler": "handlers/get_order_history.lambda_handler",
+              "Runtime": "python3.13",
+              "FunctionName": "china-wok-status-service-dev-getOrderHistory",
+              "MemorySize": 256,
+              "Timeout": 20,
+              "Description": "Obtiene el historial completo de un pedido con tiempos",
+              "Environment": {
+                "Variables": {
+                  "ORDERS_TABLE": "Orders",
+                  "ORG_NAME": "anelrojas",
+                  "SERVICE_NAME": "china-wok-status-service",
+                  "AWS_ACCOUNT_ID": "733476523620",
+                  "ROLE_NAME": "LabRole"
+                }
+              },
+              "Role": "arn:aws:iam::733476523620:role/LabRole"
+            },
+            "DependsOn": [
+              "GetOrderHistoryLogGroup"
+            ]
+          },
+          "GetDashboardOrdersLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+              },
+              "Handler": "handlers/get_dashboard_orders.lambda_handler",
+              "Runtime": "python3.13",
+              "FunctionName": "china-wok-status-service-dev-getDashboardOrders",
+              "MemorySize": 512,
+              "Timeout": 20,
+              "Description": "Dashboard para el restaurante - pedidos por estado",
+              "Environment": {
+                "Variables": {
+                  "ORDERS_TABLE": "Orders",
+                  "ORG_NAME": "anelrojas",
+                  "SERVICE_NAME": "china-wok-status-service",
+                  "AWS_ACCOUNT_ID": "733476523620",
+                  "ROLE_NAME": "LabRole"
+                }
+              },
+              "Role": "arn:aws:iam::733476523620:role/LabRole"
+            },
+            "DependsOn": [
+              "GetDashboardOrdersLogGroup"
+            ]
+          },
+          "GetCustomerOrdersLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+                "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+              },
+              "Handler": "handlers/get_customer_orders.lambda_handler",
+              "Runtime": "python3.13",
+              "FunctionName": "china-wok-status-service-dev-getCustomerOrders",
+              "MemorySize": 256,
+              "Timeout": 20,
+              "Description": "Lista todos los pedidos de un cliente con estado",
+              "Environment": {
+                "Variables": {
+                  "ORDERS_TABLE": "Orders",
+                  "ORG_NAME": "anelrojas",
+                  "SERVICE_NAME": "china-wok-status-service",
+                  "AWS_ACCOUNT_ID": "733476523620",
+                  "ROLE_NAME": "LabRole"
+                }
+              },
+              "Role": "arn:aws:iam::733476523620:role/LabRole"
+            },
+            "DependsOn": [
+              "GetCustomerOrdersLogGroup"
+            ]
+          },
+          "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "EventListenerLambdaFunction"
+              },
+              "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+              "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB"
+            }
+          },
+          "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetOrderStatusLambdaFunction"
+              },
+              "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+              "Description": "Obtiene el estado actual de un pedido específico"
+            }
+          },
+          "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetOrderHistoryLambdaFunction"
+              },
+              "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+              "Description": "Obtiene el historial completo de un pedido con tiempos"
+            }
+          },
+          "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetDashboardOrdersLambdaFunction"
+              },
+              "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+              "Description": "Dashboard para el restaurante - pedidos por estado"
+            }
+          },
+          "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetCustomerOrdersLambdaFunction"
+              },
+              "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+              "Description": "Lista todos los pedidos de un cliente con estado"
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-china-wok-status-service",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceStatus": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "status",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusOrder": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatus"
+              },
+              "PathPart": "order",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusOrderOrderidVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatusOrder"
+              },
+              "PathPart": "{order_id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusOrderOrderidVarHistory": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+              },
+              "PathPart": "history",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusDashboard": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatus"
+              },
+              "PathPart": "dashboard",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusCustomer": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatus"
+              },
+              "PathPart": "customer",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceStatusCustomerCustomeridVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceStatusCustomer"
+              },
+              "PathPart": "{customer_id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStatusOrderOrderidVarOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStatusDashboardOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusDashboard"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStatusCustomerCustomeridVarOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodStatusOrderOrderidVarGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetOrderStatusLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetOrderStatusLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodStatusOrderOrderidVarHistoryGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetOrderHistoryLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetOrderHistoryLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodStatusDashboardGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {
+                "method.request.querystring.status": false
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusDashboard"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetDashboardOrdersLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetDashboardOrdersLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodStatusCustomerCustomeridVarGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": "<REDACTED>",
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetCustomerOrdersLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetCustomerOrdersLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1763684182451": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodStatusOrderOrderidVarOptions",
+              "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions",
+              "ApiGatewayMethodStatusDashboardOptions",
+              "ApiGatewayMethodStatusCustomerCustomeridVarOptions",
+              "ApiGatewayMethodStatusOrderOrderidVarGet",
+              "ApiGatewayMethodStatusOrderOrderidVarHistoryGet",
+              "ApiGatewayMethodStatusDashboardGet",
+              "ApiGatewayMethodStatusCustomerCustomeridVarGet"
+            ]
+          },
+          "GetOrderStatusLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetOrderStatusLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetOrderHistoryLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetOrderHistoryLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetDashboardOrdersLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetDashboardOrdersLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetCustomerOrdersLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetCustomerOrdersLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "ChinawokstatusservicedeveventListenerrule1EventBridgeRule": {
+            "Type": "AWS::Events::Rule",
+            "Properties": {
+              "EventPattern": {
+                "source": [
+                  "orders.service"
+                ],
+                "detail-type": [
+                  "OrderCreated",
+                  "OrderStatusUpdated",
+                  "OrderCancelled"
+                ]
+              },
+              "Name": "china-wok-status-service-dev-eventListener-rule-1",
+              "State": "ENABLED",
+              "Targets": [
+                {
+                  "Arn": {
+                    "Fn::GetAtt": [
+                      "EventListenerLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Id": "china-wok-status-service-dev-eventListener-rule-1-target"
+                }
+              ]
+            }
+          },
+          "EventListenerEventBridgeLambdaPermission1": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:InvokeFunction",
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "EventListenerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Principal": "events.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  ":",
+                  [
+                    "arn",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    "events",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    {
+                      "Fn::Join": [
+                        "/",
+                        [
+                          "rule",
+                          "default",
+                          "china-wok-status-service-dev-eventListener-rule-1"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "EventListenerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo"
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-EventListenerLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetOrderStatusLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA"
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-GetOrderStatusLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetOrderHistoryLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk"
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-GetOrderHistoryLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetDashboardOrdersLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8"
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-GetDashboardOrdersLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetCustomerOrdersLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE"
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-GetCustomerOrdersLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-china-wok-status-service-dev-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "org: ${env:ORG_NAME}\r\nservice: china-wok-status-service\r\n\r\nplugins:\r\n  - serverless-dotenv-plugin\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: python3.13\r\n  memorySize: 256\r\n  stage: dev\r\n  region: us-east-1\r\n  timeout: 20\r\n  iam:\r\n    role: arn:aws:iam::${env:AWS_ACCOUNT_ID}:role/${env:ROLE_NAME}\r\n  \r\n  environment:\r\n    ORDERS_TABLE: ${env:ORDERS_TABLE}\r\n\r\nfunctions:\r\n  # EVENT LISTENERS - Escuchan EventBridge\r\n\r\n  \r\n  eventListener:\r\n    handler: handlers/event_listener.handle_order_event\r\n    description: Escucha eventos del flujo de pedidos y actualiza DynamoDB\r\n    events:\r\n      - eventBridge:\r\n          eventBus: default\r\n          pattern:\r\n            source:\r\n              - orders.service\r\n            detail-type:\r\n              - OrderCreated\r\n              - OrderStatusUpdated\r\n              - OrderCancelled\r\n\r\n  # API ENDPOINTS - Para consultas\r\n  \r\n  getOrderStatus:\r\n    handler: handlers/get_order_status.lambda_handler\r\n    description: Obtiene el estado actual de un pedido específico\r\n    events:\r\n      - http:\r\n          path: status/order/{order_id}\r\n          method: get\r\n          cors: true\r\n          integration: lambda-proxy\r\n\r\n  getOrderHistory:\r\n    handler: handlers/get_order_history.lambda_handler\r\n    description: Obtiene el historial completo de un pedido con tiempos\r\n    events:\r\n      - http:\r\n          path: status/order/{order_id}/history\r\n          method: get\r\n          cors: true\r\n          integration: lambda-proxy\r\n\r\n  getDashboardOrders:\r\n    handler: handlers/get_dashboard_orders.lambda_handler\r\n    description: Dashboard para el restaurante - pedidos por estado\r\n    memorySize: 512\r\n    events:\r\n      - http:\r\n          path: status/dashboard\r\n          method: get\r\n          cors: true\r\n          integration: lambda-proxy\r\n          request:\r\n            parameters:\r\n              querystrings:\r\n                status: false\r\n\r\n  getCustomerOrders:\r\n    handler: handlers/get_customer_orders.lambda_handler\r\n    description: Lista todos los pedidos de un cliente con estado\r\n    events:\r\n      - http:\r\n          path: status/customer/{customer_id}\r\n          method: get\r\n          cors: true\r\n          integration: lambda-proxy\r\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "1cb8f1ec-92cb-44ef-abc2-dfffc98f3c88",
+    "orgName": "anelrojas",
+    "userId": "5LgXTbJ4r5mk0pY3rx",
+    "userName": "anelrojas",
+    "serviceProviderAwsAccountId": "733476523620",
+    "serviceProviderAwsCfStackName": "china-wok-status-service-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:733476523620:stack/china-wok-status-service-dev/e29a0b10-c668-11f0-840b-12908398d0df",
+    "serviceProviderAwsCfStackCreated": "2025-11-20T23:30:23.071Z",
+    "serviceProviderAwsCfStackUpdated": "2025-11-21T00:09:04.887Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "EventListenerLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:733476523620:function:china-wok-status-service-dev-eventListener:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-china-wok-status-service-dev-EventListenerLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetDashboardOrdersLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:733476523620:function:china-wok-status-service-dev-getDashboardOrders:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-china-wok-status-service-dev-GetDashboardOrdersLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetOrderStatusLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:733476523620:function:china-wok-status-service-dev-getOrderStatus:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-china-wok-status-service-dev-GetOrderStatusLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetOrderHistoryLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:733476523620:function:china-wok-status-service-dev-getOrderHistory:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-china-wok-status-service-dev-GetOrderHistoryLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "GetCustomerOrdersLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:733476523620:function:china-wok-status-service-dev-getCustomerOrders:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-china-wok-status-service-dev-GetCustomerOrdersLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://xbdeh2owk7.execute-api.us-east-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-china-wok-status-service-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+        "ExportName": "sls-china-wok-status-service-dev-ServerlessDeploymentBucketName"
+      }
+    ],
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "EventListenerLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/china-wok-status-service-dev-eventListener"
+          }
+        },
+        "GetOrderStatusLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderStatus"
+          }
+        },
+        "GetOrderHistoryLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getOrderHistory"
+          }
+        },
+        "GetDashboardOrdersLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getDashboardOrders"
+          }
+        },
+        "GetCustomerOrdersLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/china-wok-status-service-dev-getCustomerOrders"
+          }
+        },
+        "EventListenerLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+            },
+            "Handler": "handlers/event_listener.handle_order_event",
+            "Runtime": "python3.13",
+            "FunctionName": "china-wok-status-service-dev-eventListener",
+            "MemorySize": 256,
+            "Timeout": 20,
+            "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB",
+            "Environment": {
+              "Variables": {
+                "ORDERS_TABLE": "Orders",
+                "ORG_NAME": "anelrojas",
+                "SERVICE_NAME": "china-wok-status-service",
+                "AWS_ACCOUNT_ID": "733476523620",
+                "ROLE_NAME": "LabRole"
+              }
+            },
+            "Role": "arn:aws:iam::733476523620:role/LabRole"
+          },
+          "DependsOn": [
+            "EventListenerLogGroup"
+          ]
+        },
+        "GetOrderStatusLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+            },
+            "Handler": "handlers/get_order_status.lambda_handler",
+            "Runtime": "python3.13",
+            "FunctionName": "china-wok-status-service-dev-getOrderStatus",
+            "MemorySize": 256,
+            "Timeout": 20,
+            "Description": "Obtiene el estado actual de un pedido específico",
+            "Environment": {
+              "Variables": {
+                "ORDERS_TABLE": "Orders",
+                "ORG_NAME": "anelrojas",
+                "SERVICE_NAME": "china-wok-status-service",
+                "AWS_ACCOUNT_ID": "733476523620",
+                "ROLE_NAME": "LabRole"
+              }
+            },
+            "Role": "arn:aws:iam::733476523620:role/LabRole"
+          },
+          "DependsOn": [
+            "GetOrderStatusLogGroup"
+          ]
+        },
+        "GetOrderHistoryLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+            },
+            "Handler": "handlers/get_order_history.lambda_handler",
+            "Runtime": "python3.13",
+            "FunctionName": "china-wok-status-service-dev-getOrderHistory",
+            "MemorySize": 256,
+            "Timeout": 20,
+            "Description": "Obtiene el historial completo de un pedido con tiempos",
+            "Environment": {
+              "Variables": {
+                "ORDERS_TABLE": "Orders",
+                "ORG_NAME": "anelrojas",
+                "SERVICE_NAME": "china-wok-status-service",
+                "AWS_ACCOUNT_ID": "733476523620",
+                "ROLE_NAME": "LabRole"
+              }
+            },
+            "Role": "arn:aws:iam::733476523620:role/LabRole"
+          },
+          "DependsOn": [
+            "GetOrderHistoryLogGroup"
+          ]
+        },
+        "GetDashboardOrdersLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+            },
+            "Handler": "handlers/get_dashboard_orders.lambda_handler",
+            "Runtime": "python3.13",
+            "FunctionName": "china-wok-status-service-dev-getDashboardOrders",
+            "MemorySize": 512,
+            "Timeout": 20,
+            "Description": "Dashboard para el restaurante - pedidos por estado",
+            "Environment": {
+              "Variables": {
+                "ORDERS_TABLE": "Orders",
+                "ORG_NAME": "anelrojas",
+                "SERVICE_NAME": "china-wok-status-service",
+                "AWS_ACCOUNT_ID": "733476523620",
+                "ROLE_NAME": "LabRole"
+              }
+            },
+            "Role": "arn:aws:iam::733476523620:role/LabRole"
+          },
+          "DependsOn": [
+            "GetDashboardOrdersLogGroup"
+          ]
+        },
+        "GetCustomerOrdersLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+              "S3Key": "serverless/china-wok-status-service/dev/1763684196075-2025-11-21T00:16:36.075Z/china-wok-status-service.zip"
+            },
+            "Handler": "handlers/get_customer_orders.lambda_handler",
+            "Runtime": "python3.13",
+            "FunctionName": "china-wok-status-service-dev-getCustomerOrders",
+            "MemorySize": 256,
+            "Timeout": 20,
+            "Description": "Lista todos los pedidos de un cliente con estado",
+            "Environment": {
+              "Variables": {
+                "ORDERS_TABLE": "Orders",
+                "ORG_NAME": "anelrojas",
+                "SERVICE_NAME": "china-wok-status-service",
+                "AWS_ACCOUNT_ID": "733476523620",
+                "ROLE_NAME": "LabRole"
+              }
+            },
+            "Role": "arn:aws:iam::733476523620:role/LabRole"
+          },
+          "DependsOn": [
+            "GetCustomerOrdersLogGroup"
+          ]
+        },
+        "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "EventListenerLambdaFunction"
+            },
+            "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+            "Description": "Escucha eventos del flujo de pedidos y actualiza DynamoDB"
+          }
+        },
+        "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetOrderStatusLambdaFunction"
+            },
+            "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+            "Description": "Obtiene el estado actual de un pedido específico"
+          }
+        },
+        "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetOrderHistoryLambdaFunction"
+            },
+            "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+            "Description": "Obtiene el historial completo de un pedido con tiempos"
+          }
+        },
+        "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetDashboardOrdersLambdaFunction"
+            },
+            "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+            "Description": "Dashboard para el restaurante - pedidos por estado"
+          }
+        },
+        "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "GetCustomerOrdersLambdaFunction"
+            },
+            "CodeSha256": "HBJK0Hord+qNJJvLI+6+m28EyMLd1HbpoZ2z/6MHVV8=",
+            "Description": "Lista todos los pedidos de un cliente con estado"
+          }
+        },
+        "ApiGatewayRestApi": {
+          "Type": "AWS::ApiGateway::RestApi",
+          "Properties": {
+            "Name": "dev-china-wok-status-service",
+            "EndpointConfiguration": {
+              "Types": [
+                "EDGE"
+              ]
+            },
+            "Policy": ""
+          }
+        },
+        "ApiGatewayResourceStatus": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Fn::GetAtt": [
+                "ApiGatewayRestApi",
+                "RootResourceId"
+              ]
+            },
+            "PathPart": "status",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusOrder": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatus"
+            },
+            "PathPart": "order",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusOrderOrderidVar": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatusOrder"
+            },
+            "PathPart": "{order_id}",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusOrderOrderidVarHistory": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+            },
+            "PathPart": "history",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusDashboard": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatus"
+            },
+            "PathPart": "dashboard",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusCustomer": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatus"
+            },
+            "PathPart": "customer",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayResourceStatusCustomerCustomeridVar": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "ParentId": {
+              "Ref": "ApiGatewayResourceStatusCustomer"
+            },
+            "PathPart": "{customer_id}",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodStatusOrderOrderidVarOptions": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "AuthorizationType": "NONE",
+            "HttpMethod": "OPTIONS",
+            "MethodResponses": [
+              {
+                "StatusCode": "200",
+                "ResponseParameters": {
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true
+                },
+                "ResponseModels": {}
+              }
+            ],
+            "RequestParameters": {},
+            "Integration": {
+              "Type": "MOCK",
+              "RequestTemplates": {
+                "application/json": "{statusCode:200}"
+              },
+              "ContentHandling": "CONVERT_TO_TEXT",
+              "IntegrationResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                  },
+                  "ResponseTemplates": {
+                    "application/json": ""
+                  }
+                }
+              ]
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "AuthorizationType": "NONE",
+            "HttpMethod": "OPTIONS",
+            "MethodResponses": [
+              {
+                "StatusCode": "200",
+                "ResponseParameters": {
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true
+                },
+                "ResponseModels": {}
+              }
+            ],
+            "RequestParameters": {},
+            "Integration": {
+              "Type": "MOCK",
+              "RequestTemplates": {
+                "application/json": "{statusCode:200}"
+              },
+              "ContentHandling": "CONVERT_TO_TEXT",
+              "IntegrationResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                  },
+                  "ResponseTemplates": {
+                    "application/json": ""
+                  }
+                }
+              ]
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodStatusDashboardOptions": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "AuthorizationType": "NONE",
+            "HttpMethod": "OPTIONS",
+            "MethodResponses": [
+              {
+                "StatusCode": "200",
+                "ResponseParameters": {
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true
+                },
+                "ResponseModels": {}
+              }
+            ],
+            "RequestParameters": {},
+            "Integration": {
+              "Type": "MOCK",
+              "RequestTemplates": {
+                "application/json": "{statusCode:200}"
+              },
+              "ContentHandling": "CONVERT_TO_TEXT",
+              "IntegrationResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                  },
+                  "ResponseTemplates": {
+                    "application/json": ""
+                  }
+                }
+              ]
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusDashboard"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodStatusCustomerCustomeridVarOptions": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "AuthorizationType": "NONE",
+            "HttpMethod": "OPTIONS",
+            "MethodResponses": [
+              {
+                "StatusCode": "200",
+                "ResponseParameters": {
+                  "method.response.header.Access-Control-Allow-Origin": true,
+                  "method.response.header.Access-Control-Allow-Headers": true,
+                  "method.response.header.Access-Control-Allow-Methods": true
+                },
+                "ResponseModels": {}
+              }
+            ],
+            "RequestParameters": {},
+            "Integration": {
+              "Type": "MOCK",
+              "RequestTemplates": {
+                "application/json": "{statusCode:200}"
+              },
+              "ContentHandling": "CONVERT_TO_TEXT",
+              "IntegrationResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                  },
+                  "ResponseTemplates": {
+                    "application/json": ""
+                  }
+                }
+              ]
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
+          }
+        },
+        "ApiGatewayMethodStatusOrderOrderidVarGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusOrderOrderidVar"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetOrderStatusLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetOrderStatusLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodStatusOrderOrderidVarHistoryGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusOrderOrderidVarHistory"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetOrderHistoryLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetOrderHistoryLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodStatusDashboardGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {
+              "method.request.querystring.status": false
+            },
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusDashboard"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetDashboardOrdersLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetDashboardOrdersLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayMethodStatusCustomerCustomeridVarGet": {
+          "Type": "AWS::ApiGateway::Method",
+          "Properties": {
+            "HttpMethod": "GET",
+            "RequestParameters": {},
+            "ResourceId": {
+              "Ref": "ApiGatewayResourceStatusCustomerCustomeridVar"
+            },
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "ApiKeyRequired": "<REDACTED>",
+            "AuthorizationType": "NONE",
+            "Integration": {
+              "IntegrationHttpMethod": "POST",
+              "Type": "AWS_PROXY",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "GetCustomerOrdersLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "/invocations"
+                  ]
+                ]
+              }
+            },
+            "MethodResponses": []
+          },
+          "DependsOn": [
+            "GetCustomerOrdersLambdaPermissionApiGateway"
+          ]
+        },
+        "ApiGatewayDeployment1763684182451": {
+          "Type": "AWS::ApiGateway::Deployment",
+          "Properties": {
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "StageName": "dev"
+          },
+          "DependsOn": [
+            "ApiGatewayMethodStatusOrderOrderidVarOptions",
+            "ApiGatewayMethodStatusOrderOrderidVarHistoryOptions",
+            "ApiGatewayMethodStatusDashboardOptions",
+            "ApiGatewayMethodStatusCustomerCustomeridVarOptions",
+            "ApiGatewayMethodStatusOrderOrderidVarGet",
+            "ApiGatewayMethodStatusOrderOrderidVarHistoryGet",
+            "ApiGatewayMethodStatusDashboardGet",
+            "ApiGatewayMethodStatusCustomerCustomeridVarGet"
+          ]
+        },
+        "GetOrderStatusLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetOrderStatusLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetOrderHistoryLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetOrderHistoryLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetDashboardOrdersLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetDashboardOrdersLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetCustomerOrdersLambdaPermissionApiGateway": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "GetCustomerOrdersLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "/*/*"
+                ]
+              ]
+            }
+          }
+        },
+        "ChinawokstatusservicedeveventListenerrule1EventBridgeRule": {
+          "Type": "AWS::Events::Rule",
+          "Properties": {
+            "EventPattern": {
+              "source": [
+                "orders.service"
+              ],
+              "detail-type": [
+                "OrderCreated",
+                "OrderStatusUpdated",
+                "OrderCancelled"
+              ]
+            },
+            "Name": "china-wok-status-service-dev-eventListener-rule-1",
+            "State": "ENABLED",
+            "Targets": [
+              {
+                "Arn": {
+                  "Fn::GetAtt": [
+                    "EventListenerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Id": "china-wok-status-service-dev-eventListener-rule-1-target"
+              }
+            ]
+          }
+        },
+        "EventListenerEventBridgeLambdaPermission1": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:InvokeFunction",
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "EventListenerLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Principal": "events.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                ":",
+                [
+                  "arn",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  "events",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  {
+                    "Fn::Join": [
+                      "/",
+                      [
+                        "rule",
+                        "default",
+                        "china-wok-status-service-dev-eventListener-rule-1"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-us-east-1-43b1dcc8-fd73",
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "EventListenerLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "EventListenerLambdaVersionQCGBOPieO55sWKWXAx57RiGRSiZcHkijyWK5x79ERSo"
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-EventListenerLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetOrderStatusLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetOrderStatusLambdaVersiongqW0ihsm9nLAEdajcNcD7jkmpp2W6DGXMbVK36OsTnA"
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-GetOrderStatusLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetOrderHistoryLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetOrderHistoryLambdaVersionWgflzGengS7b6jr7CsZC1OOhzNn0j4GvFczWqgckyOk"
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-GetOrderHistoryLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetDashboardOrdersLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetDashboardOrdersLambdaVersionlqwKS1zPYh9Spf7lHE6BmvH7EOyqPfQ7EHFwuQn8"
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-GetDashboardOrdersLambdaFunctionQualifiedArn"
+          }
+        },
+        "GetCustomerOrdersLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "GetCustomerOrdersLambdaVersioncHbxRtTSthB8xjS0GQtcW7AyUQh4CXn1QLBQAe4GzLE"
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-GetCustomerOrdersLambdaFunctionQualifiedArn"
+          }
+        },
+        "ServiceEndpoint": {
+          "Description": "URL of the service endpoint",
+          "Value": {
+            "Fn::Join": [
+              "",
+              [
+                "https://",
+                {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                ".execute-api.",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".",
+                {
+                  "Ref": "AWS::URLSuffix"
+                },
+                "/dev"
+              ]
+            ]
+          },
+          "Export": {
+            "Name": "sls-china-wok-status-service-dev-ServiceEndpoint"
+          }
+        }
+      }
+    }
+  }
+}
